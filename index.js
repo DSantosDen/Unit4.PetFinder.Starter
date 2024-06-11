@@ -1,55 +1,51 @@
 // import the pets array from data.js
-const pets = require('./data');
+const pets = require("./data");
 
 // init express app
-const express = require('express');
+const express = require("express");
 const app = express();
 
-const PORT = 8080;
+const PORT = 3000;
 
 // GET - / - returns homepage
-app.get('/', (req, res) => {
-    // serve up the public folder as static index.html file
-
+// serve up the public folder as static index.html file
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/public/index.html");
 });
 
 // hello world route
-app.get('/api', (req, res) => {
-    res.send('Hello World!');
+app.get("/api", (req, res) => {
+  res.send("Hello World!");
 });
 
 // get all pets from the database
-app.get('/api/v1/pets', (req, res) => {
-    // send the pets array as a response
-
+// send the pets array as a response
+app.get("/api/v1/pets", (req, res) => {
+  res.json(pets);
 });
 
 // get pet by owner with query string
-app.get('/api/v1/pets/owner', (req, res) => {
-    // get the owner from the request
-
-
-    // find the pet in the pets array
-    const pet = pets.find(pet => pet.owner === owner);
-
-    // send the pet as a response
-
+// get the owner from the request
+// find the pet in the pets array
+// send the pet as a response
+app.get("/api/v1/pets/owner/:owner", (req, res) => {
+  const owner = req.params.owner;
+  const pet = pets.filter((pet) => pet.owner === owner);
+  res.json(pet);
 });
 
 // get pet by name
-app.get('/api/v1/pets/:name', (req, res) => {
-    // get the name from the request
-
-
-    // find the pet in the pets array
-    const pet = pets.find(pet => pet.name === name);
-
-    // send the pet as a response
-
+// get the name from the request
+// find the pet in the pets array
+// send the pet as a response
+app.get("/api/v1/pets/:name", (req, res) => {
+  const name = req.params.name;
+  const pet = pets.find((pet) => pet.name === name);
+  res.json(pet);
 });
 
 app.listen(PORT, () => {
-    console.log('Server is listening on port ' + PORT);
+  console.log("Server is listening on port " + PORT);
 });
 
 module.exports = app;
